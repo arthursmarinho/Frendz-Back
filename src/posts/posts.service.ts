@@ -26,4 +26,9 @@ export class PostsService {
       ...doc.data(),
     })) as Post[];
   }
+
+  async deletePost(id: string) {
+    await db.collection('posts').doc(id).delete();
+    return { message: 'Post deletado com sucesso' };
+  }
 }

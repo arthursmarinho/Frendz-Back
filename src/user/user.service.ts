@@ -9,7 +9,7 @@ export class UserService {
 
     return {
       email: userRecord.email || '',
-      id: userRecord.uid,
+      userUid: userRecord.uid,
       name: userRecord.displayName || '',
       photoUrl: userRecord.photoURL || '',
     };

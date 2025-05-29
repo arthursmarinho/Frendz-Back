@@ -1,7 +1,17 @@
-import { Body, Controller, Post, Get, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Get,
+  Req,
+  UseGuards,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { FirebaseAuthGuard } from 'lib/firebase/firebase-auth.guard';
+
 @Controller('posts')
 export class PostController {
   constructor(private readonly postsService: PostsService) {}
@@ -17,5 +27,10 @@ export class PostController {
     const userName = req.user.name || req.user.email || req.user.uid;
 
     return this.postsService.createPost(createPostDto);
+  }
+
+  @Delete(':id')
+  async deletePost(@Param('id') id: string) {
+    return this.postsService.deletePost(id);
   }
 }
