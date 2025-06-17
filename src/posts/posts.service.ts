@@ -1,34 +1,21 @@
-// posts.service.ts
 import { Injectable } from '@nestjs/common';
-import { db } from 'lib/firebase/firebase';
 import { CreatePostDto } from './dto/create-post.dto';
-import { Timestamp } from 'firebase-admin/firestore';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { Post as PostModel } from 'generated/prisma';
 
 @Injectable()
 export class PostsService {
-  async createPost(dto: CreatePostDto) {
-    const docRef = await db.collection('posts').add({
-      postTitle: dto.postTitle,
-      userName: dto.userName,
-      userPhoto: dto.userPhoto,
-      userUid: dto.userUid,
-      createdAt: Timestamp.now(),
-    });
+  constructor(private prisma: PrismaService) {}
 
-    return { id: docRef.id };
+  async createPost(dto: CreatePostDto): Promise<PostModel> {
+    return this.prisma.post.create({ data: dto });
   }
 
-  async getAllPosts(): Promise<Post[]> {
-    const snapshot = await db.collection('posts').get();
-
-    return snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as Post[];
+  async listPosts(): Promise<PostModel[]> {
+    return this.prisma.post.findMany();
   }
 
-  async deletePost(id: string) {
-    await db.collection('posts').doc(id).delete();
-    return { message: 'Post deletado com sucesso' };
+  async deletePost(id: string): Promise<PostModel> {
+    return this.prisma.post.delete({ where: { id: String(id) } });
   }
 }

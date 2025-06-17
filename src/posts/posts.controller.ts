@@ -3,10 +3,9 @@ import {
   Controller,
   Post,
   Get,
-  Req,
-  UseGuards,
-  Param,
   Delete,
+  Param,
+  UseGuards,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -14,23 +13,20 @@ import { FirebaseAuthGuard } from 'lib/firebase/firebase-auth.guard';
 
 @Controller('posts')
 export class PostController {
-  constructor(private readonly postsService: PostsService) {}
+  constructor(private readonly postService: PostsService) {}
 
-  @Get()
-  getAllPosts() {
-    return this.postsService.getAllPosts();
+  @Post()
+  create(@Body() dto: CreatePostDto) {
+    return this.postService.createPost(dto);
   }
 
-  @UseGuards(FirebaseAuthGuard)
-  @Post('createpost')
-  async create(@Body() createPostDto: CreatePostDto, @Req() req) {
-    const userName = req.user.name || req.user.email || req.user.uid;
-
-    return this.postsService.createPost(createPostDto);
+  @Get()
+  list() {
+    return this.postService.listPosts();
   }
 
   @Delete(':id')
-  async deletePost(@Param('id') id: string) {
-    return this.postsService.deletePost(id);
+  delete(@Param('id') id: string) {
+    return this.postService.deletePost(id);
   }
 }
