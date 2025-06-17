@@ -1,6 +1,12 @@
+import { IsString } from 'class-validator';
+
 export class CreatePostDto {
-  postTitle: string;
+  @IsString()
+  postTitle;
+  @IsString()
   userName: string;
+  @IsString()
   userPhoto: string;
+  @IsString()
   userUid: string;
 }
