@@ -6,7 +6,11 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): any {
-    return this.appService.getHello();
+  pingBack(): void {
+    return this.appService.pingBack();
+  }
+
+  pingFront(): void {
+    return this.appService.pingFront();
   }
 }
