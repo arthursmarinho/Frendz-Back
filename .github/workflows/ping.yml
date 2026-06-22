@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run cURL on Website
-        run: curl -I https://frendz-back.onrender.com/
+        run: curl -I https://frendz-back-na5m.onrender.com/
